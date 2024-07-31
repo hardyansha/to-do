@@ -5,87 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do List</title>
   <style>
-    /* Paste your CSS styles here */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+    
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #1A1D23; /* midnight blue background */
+      color: #fff; /* white text */
+    }
+    
     .container {
-      max-width: 600px;
-      margin: 20px auto;
-      background-color: #fff;
+      max-width: 400px;
+      margin: 40px auto;
       padding: 20px;
-      border-radius: 8px;
+      background-color: #2F3640; /* dark blue background */
+      border: 1px solid #ddd; /* light gray border */
+      border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      color: #fff; /* white text */
     }
+    
+    /* Header Styles */
+    
     .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      text-align: center;
       margin-bottom: 20px;
+      background-color: #4682B4; /* dark blue background */
+      color: #fff; /* white text */
+      padding: 10px;
+      border-radius: 10px 10px 0 0;
     }
+    
     .header h1 {
-      font-size: 24px;
-      color: #333;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
+    
+    .header img {
+      width: 50px;
+    }
+    
+    /* Add Task Styles */
+    
     .add-task {
-      display: flex;
       margin-bottom: 20px;
     }
+    
     .add-task input[type="text"] {
-      flex: 1;
+      width: 100%;
+      height: 40px;
       padding: 10px;
       font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-right: 10px;
+      border: 1px solid #ccc; /* light gray border */
+      border-radius: 5px;
+      color: #000; /* black text */
     }
-    .add-task button {
-      padding: 10px 20px;
+    
+    .add-task button[type="button"] {
+      width: 100%;
+      height: 40px;
+      padding: 10px;
       font-size: 16px;
+      background-color: #4CAF50; /* green background */
+      color: #fff; /* white text */
       border: none;
-      background-color: #4caf50;
-      color: #fff;
-      border-radius: 4px;
+      border-radius: 5px;
       cursor: pointer;
     }
-    .add-task button:hover {
-      background-color: #45a049;
+    
+    .add-task button[type="button"]:hover {
+      background-color: #3e8e41; /* darker green background */
     }
+    
+    /* Task List Styles */
+    
+    .task-list {
+      margin-bottom: 20px;
+      background-color: #1A1D23; /* midnight blue background */
+      padding: 10px;
+      border-radius: 10px;
+      color: #fff; /* white text */
+    }
+    
     .task-list h2 {
-      font-size: 18px;
-      color: #333;
+      color: #fff; /* white text */
+      font-weight: bold;
       margin-bottom: 10px;
     }
+    
     .task-list ul {
-      list-style-type: none;
+      list-style: none;
       padding: 0;
+      margin: 0;
     }
+    
     .task-list li {
-      background-color: #f9f9f9;
       padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 4px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      border-bottom: 1px solid #ccc; /* light gray border */
+      color: #fff; /* white text */
     }
-    .task-list li .task-name {
-      flex: 1;
+    
+    .task-list li:last-child {
+      border-bottom: none;
     }
-    .task-list li .delete-button {
-      background-color: #f44336;
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .task-list li .delete-button:hover {
-      background-color: #e53935;
+    
+    .task-list li:hover {
+      background-color: #F5F5F5; /* light gray background */
+      color: #fff; /* white text */
     }
   </style>
 </head>
@@ -97,7 +128,7 @@
     </header>
     <section class="add-task">
       <input type="text" id="new-task" placeholder="What needs to be done?">
-      <button id="add-task">Add Task</button>
+      <button type="button" id="add-task">Add Task</button>
     </section>
     <section class="task-list">
       <h2>Tasks</h2>
@@ -106,31 +137,27 @@
   </div>
 
   <script>
-    // Paste your JavaScript code here
-    document.addEventListener('DOMContentLoaded', function() {
-      var addButton = document.getElementById('add-task');
-      var inputField = document.getElementById('new-task');
-      var taskList = document.getElementById('task-list');
+    // JavaScript code
+    let taskList = [];
 
-      addButton.addEventListener('click', function() {
-        var taskName = inputField.value.trim();
-        if (taskName !== '') {
-          var li = document.createElement('li');
-          li.innerHTML = `
-            <span class="task-name">${taskName}</span>
-            <button class="delete-button">Delete</button>
-          `;
-          taskList.appendChild(li);
-          inputField.value = '';
-        }
-      });
-
-      taskList.addEventListener('click', function(event) {
-        if (event.target.classList.contains('delete-button')) {
-          event.target.parentNode.remove();
-        }
-      });
+    document.getElementById('add-task').addEventListener('click', function() {
+      let newTask = document.getElementById('new-task').value;
+      if (newTask !== '') {
+        taskList.push(newTask);
+        document.getElementById('new-task').value = '';
+        renderTaskList();
+      }
     });
+
+    function renderTaskList() {
+      let taskListHTML = '';
+      for (let i = 0; i < taskList.length; i++) {
+        taskListHTML += `<li>${taskList[i]}</li>`;
+      }
+      document.getElementById('task-list').innerHTML = taskListHTML;
+    }
+
+    renderTaskList();
   </script>
 </body>
 </html>
