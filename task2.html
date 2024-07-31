@@ -4,7 +4,90 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do List</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Paste your CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 24px;
+      color: #333;
+    }
+    .add-task {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    .add-task input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-right: 10px;
+    }
+    .add-task button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #4caf50;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .add-task button:hover {
+      background-color: #45a049;
+    }
+    .task-list h2 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .task-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .task-list li {
+      background-color: #f9f9f9;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .task-list li .task-name {
+      flex: 1;
+    }
+    .task-list li .delete-button {
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .task-list li .delete-button:hover {
+      background-color: #e53935;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -21,6 +104,33 @@
       <ul id="task-list"></ul>
     </section>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    // Paste your JavaScript code here
+    document.addEventListener('DOMContentLoaded', function() {
+      var addButton = document.getElementById('add-task');
+      var inputField = document.getElementById('new-task');
+      var taskList = document.getElementById('task-list');
+
+      addButton.addEventListener('click', function() {
+        var taskName = inputField.value.trim();
+        if (taskName !== '') {
+          var li = document.createElement('li');
+          li.innerHTML = `
+            <span class="task-name">${taskName}</span>
+            <button class="delete-button">Delete</button>
+          `;
+          taskList.appendChild(li);
+          inputField.value = '';
+        }
+      });
+
+      taskList.addEventListener('click', function(event) {
+        if (event.target.classList.contains('delete-button')) {
+          event.target.parentNode.remove();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
